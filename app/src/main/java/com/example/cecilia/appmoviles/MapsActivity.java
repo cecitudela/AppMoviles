@@ -27,7 +27,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +42,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
 
     private GoogleApiClient client;
+
+    private HashMap<Marker, Integer> mRatingHash;
+    private List<Beach> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        //Cargamos las playas
+        ManageBeach mb = new ManageBeach();
+        list = mb.getBeaches();
+
+        mRatingHash = new HashMap<>();
     }
 
 
@@ -64,17 +78,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
         // Centramos la cámara en Asturias
         LatLng asturias = new LatLng(43.366980, -5.852600);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(asturias, 7.0f));
 
-        //Cargamos las playas
-        ManageBeach mb = new ManageBeach();
-        List<Beach> list = mb.getBeaches();
+
 
         //Creamos un marcador para cada playa
-        for (Beach b : list)
-            mMap.addMarker(new MarkerOptions().position(b.getLocation()).title(b.getName()));
+        for (Beach b : list) {
+            Marker mark = mMap.addMarker(new MarkerOptions().position(b.getLocation()).title(b.getName()));
+            mRatingHash.put(mark, list.indexOf(b));
+            //Toast.makeText(getApplicationContext(), list.indexOf(b), Toast.LENGTH_SHORT).show();
+        }
 
 
         mMap.setInfoWindowAdapter(this);
@@ -84,13 +101,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onInfoWindowClick(Marker arg0) {
                 Intent i = new Intent(getApplicationContext(), DetailsActivity.class );
                 i.putExtra(DetailsActivity.KEY_LAT, arg0.getPosition());
+
+                int pos = mRatingHash.get(arg0);
+                i.putExtra(DetailsActivity.KEY_DET, list.get(pos).toString());
                 startActivity(i);
             }
 
         });
 
     }
-
 
     @Override
     public View getInfoWindow(Marker marker) {

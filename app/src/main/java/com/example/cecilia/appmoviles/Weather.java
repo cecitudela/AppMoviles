@@ -1,8 +1,5 @@
 package com.example.cecilia.appmoviles;
 
-/**
- * Created by Cecilia on 18/11/2016.
- */
 
 public class Weather {
     private String descripcion;
@@ -81,14 +78,11 @@ public class Weather {
 
     @Override
     public String toString() {
-        return "Weather{" +
-                "descripcion='" + descripcion + '\'' +
-                ", icon='" + icon + '\'' +
-                ", temp=" + temp +
-                ", temp_min=" + temp_min +
-                ", temp_max=" + temp_max +
-                ", humidity=" + humidity +
-                ", pressure=" + pressure +
-                '}';
+        return "Descripcion: " + descripcion +
+                "\n temp: " + temp +
+                "\n temp_min: " + temp_min +
+                "\n temp_max: " + temp_max +
+                "\n humidity: " + humidity +
+                "\n pressure: " + pressure;
     }
 }

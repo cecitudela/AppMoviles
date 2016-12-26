@@ -32,6 +32,7 @@ import java.net.URL;
 public class DetailsActivity extends AppCompatActivity {
 
     final static String KEY_LAT="POSITION";
+    final static String KEY_DET="DETALLES";
     private TextView txtDetails;
     private ImageView imgView;
 
@@ -43,6 +44,7 @@ public class DetailsActivity extends AppCompatActivity {
         txtDetails = (TextView) findViewById(R.id.txtDetails);
         imgView = (ImageView) findViewById(R.id.imgWeather);
 
+        String det = getIntent().getExtras().getString(KEY_DET);
         LatLng lat = (LatLng)getIntent().getExtras().get(KEY_LAT);
 
         //Obtenemos el tiempo para las coordenadas dadas
@@ -50,7 +52,7 @@ public class DetailsActivity extends AppCompatActivity {
                 Builder().permitNetwork().build());
         OpenWeather op = new OpenWeather();
         Weather weather = op.getWeaher(lat);
-        txtDetails.setText(weather.toString());
+        txtDetails.setText(det + " \n\n " + weather.toString());
 
         // Añadimos la imagen correspondiente al tiempo dado
         Bitmap loadedImage = op.downloadIcon(weather.getIcon());
