@@ -44,15 +44,20 @@ public class DetailsActivity extends AppCompatActivity {
         txtDetails = (TextView) findViewById(R.id.txtDetails);
         imgView = (ImageView) findViewById(R.id.imgWeather);
 
-        String det = getIntent().getExtras().getString(KEY_DET);
+
+        int pos = getIntent().getExtras().getInt(KEY_DET);
         LatLng lat = (LatLng)getIntent().getExtras().get(KEY_LAT);
+
+        //Cargamos las playas
+        ManageBeach mb = new ManageBeach();
+        Beach beach = mb.getBeaches().get(pos);
 
         //Obtenemos el tiempo para las coordenadas dadas
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.
                 Builder().permitNetwork().build());
         OpenWeather op = new OpenWeather();
         Weather weather = op.getWeaher(lat);
-        txtDetails.setText(det + " \n\n " + weather.toString());
+        txtDetails.setText(beach.toString() + " \n\n " + weather.toString());
 
         // Añadimos la imagen correspondiente al tiempo dado
         Bitmap loadedImage = op.downloadIcon(weather.getIcon());

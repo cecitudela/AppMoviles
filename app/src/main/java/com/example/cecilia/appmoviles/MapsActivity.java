@@ -103,7 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 i.putExtra(DetailsActivity.KEY_LAT, arg0.getPosition());
 
                 int pos = mRatingHash.get(arg0);
-                i.putExtra(DetailsActivity.KEY_DET, list.get(pos).toString()); //
+                i.putExtra(DetailsActivity.KEY_DET, pos); //
                 startActivity(i);
             }
 
@@ -129,7 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         infoView.setOrientation(LinearLayout.HORIZONTAL);
         infoView.setLayoutParams(infoViewParams);
 
-        //Descargamos la imagen             <----MEJORARLO
+        //Descargamos la imagen
         OpenWeather op = new OpenWeather();
         Weather weather = op.getWeaher(marker.getPosition());
         Bitmap loadedImage = op.downloadIcon(weather.getIcon());
