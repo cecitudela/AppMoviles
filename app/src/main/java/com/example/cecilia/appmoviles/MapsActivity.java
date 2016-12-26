@@ -103,7 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 i.putExtra(DetailsActivity.KEY_LAT, arg0.getPosition());
 
                 int pos = mRatingHash.get(arg0);
-                i.putExtra(DetailsActivity.KEY_DET, list.get(pos).toString());
+                i.putExtra(DetailsActivity.KEY_DET, list.get(pos).toString()); //
                 startActivity(i);
             }
 
