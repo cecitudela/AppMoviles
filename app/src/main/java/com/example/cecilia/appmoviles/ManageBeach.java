@@ -1,9 +1,9 @@
 package com.example.cecilia.appmoviles;
 
 import android.os.StrictMode;
-import android.widget.Toast;
 
-import com.google.android.gms.fitness.data.Application;
+import com.example.cecilia.appmoviles.sqlite.Beach;
+import com.example.cecilia.appmoviles.sqlite.BeachDataSource;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -119,12 +119,18 @@ public class ManageBeach {
                     b.setNudismo(prop.getString("Nudismo"));
                     beaches.add(b);
 
+                    /* Añadimos la playa a la base de datos */
+                    // Abrimos conexion con la base de datos
+                    /*final BeachDataSource valorationSource = new BeachDataSource(getApplicationContext());
+                    valorationSource.open();
+                    // Guardamos la valoracion
+                    valorationSource.createBeach(b);
+                    valorationSource.close();*/
+
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.example.cecilia.appmoviles;
+package com.example.cecilia.appmoviles.sqlite;
 
 import android.location.Location;
 
