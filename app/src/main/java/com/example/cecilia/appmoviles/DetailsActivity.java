@@ -8,12 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cecilia.appmoviles.sqlite.Beach;
+import com.example.cecilia.appmoviles.sqlite.BeachDataSource;
 import com.google.android.gms.maps.model.LatLng;
 
 public class DetailsActivity extends AppCompatActivity {
 
     final static String KEY_LAT="POSITION";
-    final static String KEY_DET="DETALLES";
+    final static String KEY_ID ="DETALLES";
     private TextView txtDetails;
     private ImageView imgView;
 
@@ -26,12 +27,18 @@ public class DetailsActivity extends AppCompatActivity {
         imgView = (ImageView) findViewById(R.id.imgWeather);
 
 
-        int pos = getIntent().getExtras().getInt(KEY_DET);
+        Long id = getIntent().getExtras().getLong(KEY_ID);
         LatLng lat = (LatLng)getIntent().getExtras().get(KEY_LAT);
 
         //Cargamos las playas
-        ManageBeach mb = new ManageBeach();
-        Beach beach = mb.getBeaches().get(pos);
+        final BeachDataSource beachSource = new BeachDataSource(getApplicationContext());
+        beachSource.open();
+        Beach beach = beachSource.getBeachById(id);
+        beachSource.close();
+
+
+
+
 
         //Obtenemos el tiempo para las coordenadas dadas
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.

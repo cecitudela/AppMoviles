@@ -97,9 +97,10 @@ public class ManageBeach {
             for(int i = 0; i<feat.length(); i++){
                 JSONObject fobj = (JSONObject) feat.get(i);
                 JSONObject prop = fobj.getJSONObject("properties");
-                if(prop.getString("Provincia").equals("Asturias")){
-                    Beach b = new Beach(prop.getString("Nombre"), prop.getString("Descripció"),
-                            new LatLng(prop.getDouble("Coordena_5"), prop.getDouble("Coordena_4")));
+                if(prop.getString("Provincia").equals("Asturias")) {
+                    if (!prop.getString("Nombre").equals("L'Airín")){
+                        Beach b = new Beach(prop.getString("Nombre"), prop.getString("Descripció"),
+                                new LatLng(prop.getDouble("Coordena_5"), prop.getDouble("Coordena_4")));
                     b.setAlquHamacas(prop.getString("Alquiler_h"));
                     b.setAlquNauticos(prop.getString("Alquiler_n"));
                     b.setAlquSombrillas(prop.getString("Alquiler_s"));
@@ -118,15 +119,7 @@ public class ManageBeach {
                     b.setZonaSurf(prop.getString("Zona_Surf"));
                     b.setNudismo(prop.getString("Nudismo"));
                     beaches.add(b);
-
-                    /* Añadimos la playa a la base de datos */
-                    // Abrimos conexion con la base de datos
-                    /*final BeachDataSource valorationSource = new BeachDataSource(getApplicationContext());
-                    valorationSource.open();
-                    // Guardamos la valoracion
-                    valorationSource.createBeach(b);
-                    valorationSource.close();*/
-
+                }
                 }
             }
         } catch (JSONException e) {

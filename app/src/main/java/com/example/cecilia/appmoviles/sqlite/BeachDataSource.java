@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +33,8 @@ public class BeachDataSource {
     /**
      * Columnas de la tabla
      */
-    private final String[] allColumns = { MyDBHelper.COLUMN_ID, MyDBHelper.COLUMN_ASIGNATURA,
-            MyDBHelper.COLUMN_COMMENT, MyDBHelper.COLUMN_RATING };
+    private final String[] allColumns = { MyDBHelper.COLUMN_ID, MyDBHelper.COLUMN_NAME,
+            MyDBHelper.COLUMN_DESCR, MyDBHelper.COLUMN_LAT, MyDBHelper.COLUMN_LON };
     /**
      * Constructor.
      *
@@ -64,16 +66,21 @@ public class BeachDataSource {
 
     public long createBeach( Beach beachToInsert) {
         // Establecemos los valores que se insertaran
-       /* ContentValues values = new ContentValues();
-        values.put(MyDBHelper.COLUMN_COMMENT, valorationToInsert.getComment());
-        values.put(MyDBHelper.COLUMN_ASIGNATURA, valorationToInsert.getCourse());
-        values.put(MyDBHelper.COLUMN_RATING, valorationToInsert.getRating());
+        ContentValues values = new ContentValues();
+        values.put(MyDBHelper.COLUMN_NAME, beachToInsert.getName());
+        values.put(MyDBHelper.COLUMN_DESCR, beachToInsert.getDescription());
+        values.put(MyDBHelper.COLUMN_LAT, beachToInsert.getLocation().latitude);
+        values.put(MyDBHelper.COLUMN_LON, beachToInsert.getLocation().longitude);
 
         // Insertamos la valoracion
-        long insertId = database.insert(MyDBHelper.TABLE_VALORATIONS, null, values);
+        long insertId = database.insert(MyDBHelper.TABLE_PLAYAS, null, values);
 
-        return insertId;*/
-        return 0;
+        /*database.execSQL("insert into playas (name, descrp, lat, lon) values ('" + beachToInsert.getName()
+                +"', '" + beachToInsert.getDescription() +"', " + beachToInsert.getLocation().latitude +
+                ", " + beachToInsert.getLocation().longitude + ")");
+
+*/
+        return insertId;
     }
 
     /**
@@ -85,16 +92,13 @@ public class BeachDataSource {
         // Lista que almacenara el resultado
         List<Beach> beachsList = new ArrayList<Beach>();
         //hacemos una query porque queremos devolver un cursor
-        Cursor cursor = database.query(MyDBHelper.TABLE_VALORATIONS, allColumns,
+        Cursor cursor = database.query(MyDBHelper.TABLE_PLAYAS, allColumns,
                 null, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            /*final Beach beach = new Beach();
-            valoration.setCourse(cursor.getString(1));
-            valoration.setComment(cursor.getString(2));
-            valoration.setRating(cursor.getInt(3));
-
-            valorationList.add(beach);*/
+            LatLng l = new LatLng(cursor.getDouble(3), cursor.getDouble(4));
+            final Beach beach = new Beach(cursor.getString(1),cursor.getString(2), l);
+            beachsList.add(beach);
             cursor.moveToNext();
         }
 
@@ -102,6 +106,24 @@ public class BeachDataSource {
         // Una vez obtenidos todos los datos y cerrado el cursor, devolvemos la
         // lista.
         return beachsList;
+    }
+
+
+    public Beach getBeachById(Long id) {
+        // Lista que almacenara el resultado
+        Beach beach = null;
+        //hacemos una query porque queremos devolver un cursor
+        Cursor c = database.query(MyDBHelper.TABLE_PLAYAS, allColumns, "_id=" + id,
+                null, null, null, null, null);
+        if(c != null) {
+            c.moveToFirst();
+        }
+        LatLng l = new LatLng(c.getDouble(3), c.getDouble(4));
+        beach = new Beach(c.getString(1),c.getString(2), l);
+
+        // Una vez obtenidos todos los datos y cerrado el cursor, devolvemos la
+        // playa.
+        return beach;
     }
 
 }

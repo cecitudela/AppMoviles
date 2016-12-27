@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cecilia.appmoviles.sqlite.Beach;
+import com.example.cecilia.appmoviles.sqlite.BeachDataSource;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,7 +30,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleApiClient client;
 
-    private HashMap<Marker, Integer> mRatingHash;
+    private HashMap<Marker, Long> mRatingHash;
     private List<Beach> list;
 
     @Override
@@ -71,14 +72,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(asturias, 7.0f));
 
 
-
-        //Creamos un marcador para cada playa
+        // Abrimos conexion con la base de datos
+        final BeachDataSource beachSource = new BeachDataSource(getApplicationContext());
+        beachSource.open();
         for (Beach b : list) {
+            Long id = beachSource.createBeach(b);
             Marker mark = mMap.addMarker(new MarkerOptions().position(b.getLocation()).title(b.getName()));
-            mRatingHash.put(mark, list.indexOf(b));
-            //Toast.makeText(getApplicationContext(), list.indexOf(b), Toast.LENGTH_SHORT).show();
+            mRatingHash.put(mark, id);
         }
 
+
+        beachSource.close();
 
         mMap.setInfoWindowAdapter(this);
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
@@ -88,8 +92,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Intent i = new Intent(getApplicationContext(), DetailsActivity.class );
                 i.putExtra(DetailsActivity.KEY_LAT, arg0.getPosition());
 
-                int pos = mRatingHash.get(arg0);
-                i.putExtra(DetailsActivity.KEY_DET, pos); //
+                Long id = mRatingHash.get(arg0);
+                i.putExtra(DetailsActivity.KEY_ID, id); //
                 startActivity(i);
             }
 

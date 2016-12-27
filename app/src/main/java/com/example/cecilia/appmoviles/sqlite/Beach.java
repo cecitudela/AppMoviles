@@ -31,7 +31,6 @@ public class Beach {
 
 
 
-
     public Beach(String name, String description, LatLng location) {
         this.name = name;
         this.description = description;
