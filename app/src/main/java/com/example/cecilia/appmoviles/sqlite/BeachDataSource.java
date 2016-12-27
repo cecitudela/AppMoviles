@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Ejemplo <b>SQLite</b>. Ejemplo de uso de SQLite.
+ * <b>SQLite</b>
  *
- * DAO para la tabla de valoracion.
- * Se encarga de abrir y cerrar la conexion, asi como hacer las consultas relacionadas con la tabla valoracion
+ * DAO para la tabla de playas.
+ * Se encarga de abrir y cerrar la conexion, asi como hacer las consultas relacionadas con la tabla playas
  *
 
  */
@@ -72,26 +72,19 @@ public class BeachDataSource {
         values.put(MyDBHelper.COLUMN_LAT, beachToInsert.getLocation().latitude);
         values.put(MyDBHelper.COLUMN_LON, beachToInsert.getLocation().longitude);
 
-        // Insertamos la valoracion
+        // Insertamos la playa
         long insertId = database.insert(MyDBHelper.TABLE_PLAYAS, null, values);
 
-        /*database.execSQL("insert into playas (name, descrp, lat, lon) values ('" + beachToInsert.getName()
-                +"', '" + beachToInsert.getDescription() +"', " + beachToInsert.getLocation().latitude +
-                ", " + beachToInsert.getLocation().longitude + ")");
-
-*/
         return insertId;
     }
 
     /**
-     * Obtiene todas las valoraciones andadidas por los usuarios.
+     * Obtiene todas las playas añadidas.
      *
-     * @return Lista de objetos de tipo Valoration
+     * @return Lista de objetos de tipo Beach
      */
     public List<Beach> getAllValorations() {
-        // Lista que almacenara el resultado
         List<Beach> beachsList = new ArrayList<Beach>();
-        //hacemos una query porque queremos devolver un cursor
         Cursor cursor = database.query(MyDBHelper.TABLE_PLAYAS, allColumns,
                 null, null, null, null, null);
         cursor.moveToFirst();
@@ -103,16 +96,16 @@ public class BeachDataSource {
         }
 
         cursor.close();
-        // Una vez obtenidos todos los datos y cerrado el cursor, devolvemos la
-        // lista.
         return beachsList;
     }
 
-
+    /**
+     * Obtiene la playa cuyo id es el introducido por parámetro
+     * @param id    ID de la playa que se busca
+     * @return Objeto de la clase Beach cuyo id se corresponde con el dado por parámetro
+     */
     public Beach getBeachById(Long id) {
-        // Lista que almacenara el resultado
         Beach beach = null;
-        //hacemos una query porque queremos devolver un cursor
         Cursor c = database.query(MyDBHelper.TABLE_PLAYAS, allColumns, "_id=" + id,
                 null, null, null, null, null);
         if(c != null) {
@@ -120,10 +113,29 @@ public class BeachDataSource {
         }
         LatLng l = new LatLng(c.getDouble(3), c.getDouble(4));
         beach = new Beach(c.getString(1),c.getString(2), l);
-
-        // Una vez obtenidos todos los datos y cerrado el cursor, devolvemos la
-        // playa.
         return beach;
+    }
+
+    /**
+     * Obtiene una lista de todas las playas cuyo nombre contiene la cadena pasada por parámetro
+     * @param nombre    Cadena que debe contener el nombre de las playas que se buscan
+     * @return  Lista de objetos Beach cuyo nombre se corresponde con la cadena dada por parámetro
+     */
+    public List<Beach> getBeachByName(String nombre) {
+        List<Beach> beachsList = new ArrayList<Beach>();
+
+        Cursor cursor = database.query(MyDBHelper.TABLE_PLAYAS, allColumns, "name LIKE '%" + nombre + "%'",
+                null, null, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            LatLng l = new LatLng(cursor.getDouble(3), cursor.getDouble(4));
+            final Beach beach = new Beach(cursor.getString(1),cursor.getString(2), l);
+            beach.setId(cursor.getLong(0));
+            beachsList.add(beach);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return beachsList;
     }
 
 }

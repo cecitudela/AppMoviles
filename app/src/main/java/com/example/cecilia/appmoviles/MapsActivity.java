@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,6 +35,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private HashMap<Marker, Long> mRatingHash;
     private List<Beach> list;
 
+    private EditText editName;
+    private Button btnBuscar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +50,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
+        btnBuscar = (Button) findViewById(R.id.btnBuscar);
+        editName = (EditText) findViewById(R.id.txtName);
+
         //Cargamos las playas
         ManageBeach mb = new ManageBeach();
         list = mb.getBeaches();
@@ -53,15 +61,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -72,7 +71,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(asturias, 7.0f));
 
 
-        // Abrimos conexion con la base de datos
+        /**
+         * Cargamos todas las playas en la base de datos y marcamos cada una de ellas en el mapa
+         */
         final BeachDataSource beachSource = new BeachDataSource(getApplicationContext());
         beachSource.open();
         for (Beach b : list) {
@@ -80,9 +81,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Marker mark = mMap.addMarker(new MarkerOptions().position(b.getLocation()).title(b.getName()));
             mRatingHash.put(mark, id);
         }
-
-
         beachSource.close();
+
 
         mMap.setInfoWindowAdapter(this);
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
@@ -93,12 +93,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 i.putExtra(DetailsActivity.KEY_LAT, arg0.getPosition());
 
                 Long id = mRatingHash.get(arg0);
-                i.putExtra(DetailsActivity.KEY_ID, id); //
+                i.putExtra(DetailsActivity.KEY_ID, id);
                 startActivity(i);
             }
 
         });
+    }
 
+    /**
+     * Máetodo que muestra las playas que contienen el nombre escrito por el usuario en el
+     * campo de texto.
+     * @param view
+     */
+    public void filtrarNombre(View view) {
+        String name = editName.getText().toString();
+        mMap.clear();
+        mRatingHash = new HashMap<>();
+        FiltersBeachs fb = new FiltersBeachs(getApplicationContext());
+        list =fb.getBeachsByName(name);
+        for (Beach b : list) {
+            Marker mark = mMap.addMarker(new MarkerOptions().position(b.getLocation()).title(b.getName()));
+            mRatingHash.put(mark, b.getId());
+        }
     }
 
     @Override
@@ -110,6 +126,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public View getInfoContents(Marker marker) {
         return prepareInfoView(marker);
     }
+
 
     private View prepareInfoView(Marker marker) {
         //prepare InfoView programmatically
@@ -144,6 +161,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         return infoView;
     }
-
-
 }

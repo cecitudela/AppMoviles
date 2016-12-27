@@ -7,12 +7,12 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Beach {
 
+    private long id;
     private String name;
     private String description;
     private LatLng location;
 
     private String aseos;
-    private String lavapies;
     private String duchas;
     private String papelera;
     private String serv_limpieza;
@@ -35,6 +35,14 @@ public class Beach {
         this.name = name;
         this.description = description;
         this.location = location;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
@@ -67,14 +75,6 @@ public class Beach {
 
     public void setAseos(String aseos) {
         this.aseos = aseos;
-    }
-
-    public String getLavapies() {
-        return lavapies;
-    }
-
-    public void setLavapies(String lavapies) {
-        this.lavapies = lavapies;
     }
 
     public String getDuchas() {
@@ -203,7 +203,6 @@ public class Beach {
                 "\n description='" + description +
                 "\n location=" + location +
                 "\n aseos='" + aseos +
-                "\n lavapies='" + lavapies +
                 "\n duchas='" + duchas +
                 "\n papelera='" + papelera + '\'' +
                 "\n serv_limpieza='" + serv_limpieza + '\'' +

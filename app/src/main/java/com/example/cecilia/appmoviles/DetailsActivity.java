@@ -26,19 +26,15 @@ public class DetailsActivity extends AppCompatActivity {
         txtDetails = (TextView) findViewById(R.id.txtDetails);
         imgView = (ImageView) findViewById(R.id.imgWeather);
 
-
+        //Obtenemos los datos pasados por MapsActivity
         Long id = getIntent().getExtras().getLong(KEY_ID);
         LatLng lat = (LatLng)getIntent().getExtras().get(KEY_LAT);
 
-        //Cargamos las playas
+        //Cargamos la playas
         final BeachDataSource beachSource = new BeachDataSource(getApplicationContext());
         beachSource.open();
         Beach beach = beachSource.getBeachById(id);
         beachSource.close();
-
-
-
-
 
         //Obtenemos el tiempo para las coordenadas dadas
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.

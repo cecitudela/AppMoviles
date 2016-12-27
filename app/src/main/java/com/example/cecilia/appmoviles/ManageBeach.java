@@ -37,6 +37,9 @@ public class ManageBeach {
     }
 
 
+    /**
+     * Carga todas las playas que se almacenarán en la lista beaches.
+     */
     public void loadBeachs() {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.
                 Builder().permitNetwork().build());
@@ -49,6 +52,13 @@ public class ManageBeach {
         convertJsonToBeach(json);
     }
 
+    /**
+     * Descarga el fichero json de la API ofrecida por opendata.esri.es que contiene todas las
+     * playas de España.
+     *
+     * @return      fichero que contiene el json con todos los datos de las playas
+     * @throws IOException
+     */
     private String getJson() throws IOException {
         String resultado = "";
 
@@ -68,7 +78,11 @@ public class ManageBeach {
         return resultado;
     }
 
-
+    /**
+     * Método que recibe un InputStream y lo convierte en String
+     * @param is    objeto InputStream
+     * @return  Objeto String que contiene los datos del is.
+     */
     private String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -89,6 +103,10 @@ public class ManageBeach {
         return sb.toString();
     }
 
+    /**
+     * Método que crea todos los objetos Beach a partir del json que se pasa por parámetro
+     * @param in    String que contiene los datos del json obtenido de la API
+     */
     private void convertJsonToBeach(String in){
         JSONObject reader = null;
         try {
@@ -97,29 +115,31 @@ public class ManageBeach {
             for(int i = 0; i<feat.length(); i++){
                 JSONObject fobj = (JSONObject) feat.get(i);
                 JSONObject prop = fobj.getJSONObject("properties");
+                /* Tenemos en cuenta solo las playas de ASTURIAS */
                 if(prop.getString("Provincia").equals("Asturias")) {
-                    if (!prop.getString("Nombre").equals("L'Airín")){
+                    if (!prop.getString("Nombre").equals("L'Airín")){ //Esta playa se evita puesto
+                        // que su nombre nos da problemas al añadirla a la base de datos.
+
                         Beach b = new Beach(prop.getString("Nombre"), prop.getString("Descripció"),
                                 new LatLng(prop.getDouble("Coordena_5"), prop.getDouble("Coordena_4")));
-                    b.setAlquHamacas(prop.getString("Alquiler_h"));
-                    b.setAlquNauticos(prop.getString("Alquiler_n"));
-                    b.setAlquSombrillas(prop.getString("Alquiler_s"));
-                    b.setClubNautico(prop.getString("Club_naúti"));
-                    b.setAseos(prop.getString("Aseos"));
-                    b.setLavapies(prop.getString("Lavapies"));
-                    b.setDuchas(prop.getString("Duchas"));
-                    b.setPapelera(prop.getString("Papelera"));
-                    b.setServ_limpieza(prop.getString("Servicio_l"));
-                    b.setOficinaTurismo(prop.getString("Oficina_tu"));
-                    b.setEstablBebida(prop.getString("Establec_1"));
-                    b.setEstablComida(prop.getString("Establecim"));
-                    b.setZonaDeport(prop.getString("Zona_depor"));
-                    b.setZonaInfa(prop.getString("Zona_infan"));
-                    b.setZonaSubmarin(prop.getString("Submarinis"));
-                    b.setZonaSurf(prop.getString("Zona_Surf"));
-                    b.setNudismo(prop.getString("Nudismo"));
-                    beaches.add(b);
-                }
+                        b.setAlquHamacas(prop.getString("Alquiler_h"));
+                        b.setAlquNauticos(prop.getString("Alquiler_n"));
+                        b.setAlquSombrillas(prop.getString("Alquiler_s"));
+                        b.setClubNautico(prop.getString("Club_naúti"));
+                        b.setAseos(prop.getString("Aseos"));
+                        b.setDuchas(prop.getString("Duchas"));
+                        b.setPapelera(prop.getString("Papelera"));
+                        b.setServ_limpieza(prop.getString("Servicio_l"));
+                        b.setOficinaTurismo(prop.getString("Oficina_tu"));
+                        b.setEstablBebida(prop.getString("Establec_1"));
+                        b.setEstablComida(prop.getString("Establecim"));
+                        b.setZonaDeport(prop.getString("Zona_depor"));
+                        b.setZonaInfa(prop.getString("Zona_infan"));
+                        b.setZonaSubmarin(prop.getString("Submarinis"));
+                        b.setZonaSurf(prop.getString("Zona_Surf"));
+                        b.setNudismo(prop.getString("Nudismo"));
+                        beaches.add(b);
+                    }
                 }
             }
         } catch (JSONException e) {

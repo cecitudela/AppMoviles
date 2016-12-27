@@ -10,6 +10,13 @@ public class Weather {
     private int humidity;
     private int pressure;
 
+    /* swellHeight_m
+    * waterTemp_C
+    * tideTime
+    * tideHeight_mt
+    * tide_type
+    * */
+
     public Weather(String descripcion, String icon, int temp, int temp_min, int temp_max, int humidity, int pressure) {
         this.descripcion = descripcion;
         this.icon = icon;
