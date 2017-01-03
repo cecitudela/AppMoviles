@@ -14,6 +14,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
      */
     private static final String DATABASE_NAME = "playas.db";
     private static final int DATABASE_VERSION = 2;
+
     /**
      * Nombre de la tabla valorations y sus columnas
      */
@@ -40,8 +41,6 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ZONA_INFA = "zonainfa";
     public static final String COLUMN_ZONA_DEP = "zonadep";
     public static final String COLUMN_NUDISMO = "nudismo";
-
-
 
     /**
      * Script para crear la base datos
@@ -70,6 +69,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
             + COLUMN_NUDISMO + " text not null"
             +");";
 
+
     /**
      * Script para borrar la base de datos
      */
@@ -84,7 +84,6 @@ public class MyDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //  invocacamos execSQL pq no devuelve ningún tipo de dataset
-
         db.execSQL(DATABASE_CREATE);
 
     }

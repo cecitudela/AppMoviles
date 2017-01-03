@@ -15,7 +15,6 @@ import java.util.List;
 
 public class FiltersBeachs {
 
-
     private BeachDataSource beachSource;
     public FiltersBeachs(Context context){
         beachSource = new BeachDataSource(context);
