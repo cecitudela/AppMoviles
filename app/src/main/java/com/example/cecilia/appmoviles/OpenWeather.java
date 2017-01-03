@@ -34,37 +34,66 @@ import java.util.Locale;
 
 public class OpenWeather {
 
-    private String APPID="f04cfb2ae2c0de6170c93642e492db63";
+    private Weather weather;
+
+    private String APPID_TIEMPO="f04cfb2ae2c0de6170c93642e492db63";
+    private String APPID_MAREA="a61073923b5e4809bb2191414162712";
+
+
+
+    public Weather getWeaher(LatLng lat) {
+        try {
+            URL urlTiempo = new URL("http://api.openweathermap.org/data/2.5/weather?lat="+lat.latitude+"&lon="+lat.longitude+
+                    "&APPID="+APPID_TIEMPO+"&units=metric&lang=es");
+            getTiempo(urlTiempo);
+
+            URL urlMareas = new URL("http://api.worldweatheronline.com/premium/v1/marine.ashx?key=" + APPID_MAREA +
+                    "&format=json&q=" + lat.latitude + "," + lat.longitude);
+            getMareas(urlMareas);
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        return weather;
+    }
+
 
     /**
      * Método que devuelve los datos del tiempo en unas coordenadas concretas.
-     * @param lat   Coordenadas en las que se desea saber el tiempo
+     * @param url   Coordenadas en las que se desea saber el tiempo
      * @return Objeto Weather que contiene los datos del tiempo para dichas coordenadas.
      */
-    public Weather getWeaher(LatLng lat) {
+    public Weather getTiempo(URL url) {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.
                 Builder().permitNetwork().build());
         String json = null;
         try {
-            json = getJson(lat);
+            json = getJson(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return convertJsonToWeather(json);
     }
 
+    private void getMareas(URL url) {
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.
+                Builder().permitNetwork().build());
+        String json = null;
+        try {
+            json = getJson(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        convertJsonToWeather2(json);
+    }
+
     /**
      * Método que dadas unas coordenadas, accede a la API OpenWeatherMap para obtener los datos del tiempo en ese lugar.
-     * @param lat   Objeto Location con las coordenadas.
+     * @param url   Objeto Location con las coordenadas.
      * @return  Devuelve un JSON con los datos del tiempo.
      * @throws IOException
      */
-    private String getJson(LatLng lat) throws IOException {
+    private String getJson(URL url) throws IOException {
         String resultado = "";
-
-        URL url = new URL("http://api.openweathermap.org/data/2.5/weather?lat="+lat.latitude+"&lon="+lat.longitude+
-                "&APPID="+APPID+"&units=metric&lang=es");
-
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -112,7 +141,6 @@ public class OpenWeather {
      * @return  objeto Weather que contiene todos los detalles del tiempo en unas coordenadas concretas.
      */
     private Weather convertJsonToWeather(String in){
-        Weather weather = null;
         JSONObject reader = null;
         try {
             reader = new JSONObject(in);
@@ -135,6 +163,29 @@ public class OpenWeather {
             e.printStackTrace();
         }
         return weather;
+    }
+
+
+    private void convertJsonToWeather2(String json) {
+        JSONObject reader = null;
+        try {
+            reader = new JSONObject(json);
+            JSONObject data = reader.getJSONObject("data");
+            JSONArray w = data.getJSONArray("weather");
+            JSONObject wobj = (JSONObject) w.get(0);
+
+            JSONArray hourly = wobj.getJSONArray("hourly");
+            JSONObject whourly = (JSONObject) hourly.get(0);
+
+            double swellHeight_m = whourly.getDouble("swellHeight_m");
+            int waterTemp_C = whourly.getInt("waterTemp_C");
+            weather.setSwellHeight_m(swellHeight_m);
+            weather.setWaterTemp_C(waterTemp_C);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

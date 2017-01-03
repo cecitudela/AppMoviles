@@ -34,7 +34,25 @@ public class BeachDataSource {
      * Columnas de la tabla
      */
     private final String[] allColumns = { MyDBHelper.COLUMN_ID, MyDBHelper.COLUMN_NAME,
-            MyDBHelper.COLUMN_DESCR, MyDBHelper.COLUMN_LAT, MyDBHelper.COLUMN_LON };
+            MyDBHelper.COLUMN_DESCR,
+            MyDBHelper.COLUMN_LAT, MyDBHelper.COLUMN_LON
+            , MyDBHelper.COLUMN_ASEOS
+            , MyDBHelper.COLUMN_DUCHAS
+            , MyDBHelper.COLUMN_PAPELERA
+            , MyDBHelper.COLUMN_SERV_LIMPIEZA
+            , MyDBHelper.COLUMN_OFI_TUR
+            , MyDBHelper.COLUMN_EST_COMIDA
+            , MyDBHelper.COLUMN_EST_BEBIDA
+            , MyDBHelper.COLUMN_ALQ_HAM
+            , MyDBHelper.COLUMN_ALQ_SOMB
+            , MyDBHelper.COLUMN_ALQ_NAUT
+            , MyDBHelper.COLUMN_CLUB_NAUT
+            , MyDBHelper.COLUMN_ZONA_SUBM
+            , MyDBHelper.COLUMN_ZONA_SURF
+            , MyDBHelper.COLUMN_ZONA_INFA
+            , MyDBHelper.COLUMN_ZONA_DEP
+            , MyDBHelper.COLUMN_NUDISMO
+    };
     /**
      * Constructor.
      *
@@ -71,6 +89,22 @@ public class BeachDataSource {
         values.put(MyDBHelper.COLUMN_DESCR, beachToInsert.getDescription());
         values.put(MyDBHelper.COLUMN_LAT, beachToInsert.getLocation().latitude);
         values.put(MyDBHelper.COLUMN_LON, beachToInsert.getLocation().longitude);
+        values.put(MyDBHelper.COLUMN_ASEOS, beachToInsert.getAseos());
+        values.put(MyDBHelper.COLUMN_DUCHAS, beachToInsert.getDuchas());
+        values.put(MyDBHelper.COLUMN_PAPELERA, beachToInsert.getPapelera());
+        values.put(MyDBHelper.COLUMN_SERV_LIMPIEZA, beachToInsert.getServ_limpieza());
+        values.put(MyDBHelper.COLUMN_OFI_TUR, beachToInsert.getOficinaTurismo());
+        values.put(MyDBHelper.COLUMN_EST_COMIDA, beachToInsert.getEstablComida());
+        values.put(MyDBHelper.COLUMN_EST_BEBIDA, beachToInsert.getEstablBebida());
+        values.put(MyDBHelper.COLUMN_ALQ_HAM, beachToInsert.getAlquHamacas());
+        values.put(MyDBHelper.COLUMN_ALQ_SOMB, beachToInsert.getAlquSombrillas());
+        values.put(MyDBHelper.COLUMN_ALQ_NAUT, beachToInsert.getAlquNauticos());
+        values.put(MyDBHelper.COLUMN_CLUB_NAUT, beachToInsert.getClubNautico());
+        values.put(MyDBHelper.COLUMN_ZONA_SUBM, beachToInsert.getZonaSubmarin());
+        values.put(MyDBHelper.COLUMN_ZONA_SURF, beachToInsert.getZonaSurf());
+        values.put(MyDBHelper.COLUMN_ZONA_INFA, beachToInsert.getZonaInfa());
+        values.put(MyDBHelper.COLUMN_ZONA_DEP, beachToInsert.getZonaDeport());
+        values.put(MyDBHelper.COLUMN_NUDISMO, beachToInsert.getNudismo());
 
         // Insertamos la playa
         long insertId = database.insert(MyDBHelper.TABLE_PLAYAS, null, values);
@@ -89,8 +123,30 @@ public class BeachDataSource {
                 null, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            LatLng l = new LatLng(cursor.getDouble(3), cursor.getDouble(4));
-            final Beach beach = new Beach(cursor.getString(1),cursor.getString(2), l);
+            LatLng lat = new LatLng(cursor.getDouble(cursor.getColumnIndex(MyDBHelper.COLUMN_LAT)),
+                    cursor.getDouble(cursor.getColumnIndex(MyDBHelper.COLUMN_LON)));
+            final Beach beach = new Beach(cursor.getString(cursor.getColumnIndex(MyDBHelper.COLUMN_NAME))
+                    ,cursor.getString(cursor.getColumnIndex(MyDBHelper.COLUMN_DESCR)), lat);
+            beach.setId(cursor.getLong(cursor.getColumnIndex(MyDBHelper.COLUMN_ID)));
+
+            beach.setAseos(cursor.getString(cursor.getColumnIndex(MyDBHelper.COLUMN_ASEOS)));
+            beach.setDuchas(cursor.getString(6));
+            beach.setPapelera(cursor.getString(7));
+            beach.setServ_limpieza(cursor.getString(8));
+            beach.setOficinaTurismo(cursor.getString(9));
+            beach.setEstablComida(cursor.getString(10));
+            beach.setEstablBebida(cursor.getString(11));
+            beach.setAlquHamacas(cursor.getString(12));
+            beach.setAlquSombrillas(cursor.getString(13));
+            beach.setAlquNauticos(cursor.getString(14));
+            beach.setClubNautico(cursor.getString(15));
+            beach.setZonaSubmarin(cursor.getString(16));
+            beach.setZonaSurf(cursor.getString(17));
+            beach.setZonaInfa(cursor.getString(18));
+            beach.setZonaDeport(cursor.getString(19));
+            beach.setNudismo(cursor.getString(20));
+
+
             beachsList.add(beach);
             cursor.moveToNext();
         }
@@ -111,8 +167,28 @@ public class BeachDataSource {
         if(c != null) {
             c.moveToFirst();
         }
-        LatLng l = new LatLng(c.getDouble(3), c.getDouble(4));
-        beach = new Beach(c.getString(1),c.getString(2), l);
+        LatLng lat = new LatLng(c.getDouble(c.getColumnIndex(MyDBHelper.COLUMN_LAT)),
+                c.getDouble(c.getColumnIndex(MyDBHelper.COLUMN_LON)));
+        beach = new Beach(c.getString(c.getColumnIndex(MyDBHelper.COLUMN_NAME))
+                ,c.getString(c.getColumnIndex(MyDBHelper.COLUMN_DESCR)), lat);
+        beach.setId(c.getLong(c.getColumnIndex(MyDBHelper.COLUMN_ID)));
+       beach.setAseos(c.getString(c.getColumnIndex(MyDBHelper.COLUMN_ASEOS)));
+        beach.setDuchas(c.getString(6));
+        beach.setPapelera(c.getString(7));
+        beach.setServ_limpieza(c.getString(8));
+        beach.setOficinaTurismo(c.getString(9));
+        beach.setEstablComida(c.getString(10));
+        beach.setEstablBebida(c.getString(11));
+        beach.setAlquHamacas(c.getString(12));
+        beach.setAlquSombrillas(c.getString(13));
+        beach.setAlquNauticos(c.getString(14));
+        beach.setClubNautico(c.getString(15));
+        beach.setZonaSubmarin(c.getString(16));
+        beach.setZonaSurf(c.getString(17));
+        beach.setZonaInfa(c.getString(18));
+        beach.setZonaDeport(c.getString(19));
+        beach.setNudismo(c.getString(20));
+
         return beach;
     }
 
@@ -128,9 +204,29 @@ public class BeachDataSource {
                 null, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            LatLng l = new LatLng(cursor.getDouble(3), cursor.getDouble(4));
-            final Beach beach = new Beach(cursor.getString(1),cursor.getString(2), l);
-            beach.setId(cursor.getLong(0));
+            LatLng lat = new LatLng(cursor.getDouble(cursor.getColumnIndex(MyDBHelper.COLUMN_LAT)),
+                    cursor.getDouble(cursor.getColumnIndex(MyDBHelper.COLUMN_LON)));
+            final Beach beach = new Beach(cursor.getString(cursor.getColumnIndex(MyDBHelper.COLUMN_NAME))
+                    ,cursor.getString(cursor.getColumnIndex(MyDBHelper.COLUMN_DESCR)), lat);
+            beach.setId(cursor.getLong(cursor.getColumnIndex(MyDBHelper.COLUMN_ID)));
+            beach.setAseos(cursor.getString(cursor.getColumnIndex(MyDBHelper.COLUMN_ASEOS)));
+
+            beach.setDuchas(cursor.getString(6));
+            beach.setPapelera(cursor.getString(7));
+            beach.setServ_limpieza(cursor.getString(8));
+            beach.setOficinaTurismo(cursor.getString(9));
+            beach.setEstablComida(cursor.getString(10));
+            beach.setEstablBebida(cursor.getString(11));
+            beach.setAlquHamacas(cursor.getString(12));
+            beach.setAlquSombrillas(cursor.getString(13));
+            beach.setAlquNauticos(cursor.getString(14));
+            beach.setClubNautico(cursor.getString(15));
+            beach.setZonaSubmarin(cursor.getString(16));
+            beach.setZonaSurf(cursor.getString(17));
+            beach.setZonaInfa(cursor.getString(18));
+            beach.setZonaDeport(cursor.getString(19));
+            beach.setNudismo(cursor.getString(20));
+
             beachsList.add(beach);
             cursor.moveToNext();
         }

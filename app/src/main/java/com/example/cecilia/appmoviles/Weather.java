@@ -10,6 +10,9 @@ public class Weather {
     private int humidity;
     private int pressure;
 
+    private double swellHeight_m = -1.1;
+    private int waterTemp_C = -3;
+
     /* swellHeight_m
     * waterTemp_C
     * tideTime
@@ -83,6 +86,22 @@ public class Weather {
         this.pressure = pressure;
     }
 
+    public double getSwellHeight_m() {
+        return swellHeight_m;
+    }
+
+    public void setSwellHeight_m(double swellHeight_m) {
+        this.swellHeight_m = swellHeight_m;
+    }
+
+    public int getWaterTemp_C() {
+        return waterTemp_C;
+    }
+
+    public void setWaterTemp_C(int waterTemp_C) {
+        this.waterTemp_C = waterTemp_C;
+    }
+
     @Override
     public String toString() {
         return "Descripcion: " + descripcion +
@@ -90,6 +109,8 @@ public class Weather {
                 "\n temp_min: " + temp_min +
                 "\n temp_max: " + temp_max +
                 "\n humidity: " + humidity +
-                "\n pressure: " + pressure;
+                "\n pressure: " + pressure +
+                "\n swellHeight_m: " + swellHeight_m +
+                "\n waterTemp_C: " + waterTemp_C ;
     }
 }
