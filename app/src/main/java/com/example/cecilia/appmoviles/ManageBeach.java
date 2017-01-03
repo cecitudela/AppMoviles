@@ -27,6 +27,7 @@ public class ManageBeach {
 
     List<Beach> beaches;
 
+
     public ManageBeach(){
         beaches = new ArrayList<>();
         loadBeachs();

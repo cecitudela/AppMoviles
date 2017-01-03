@@ -52,6 +52,7 @@ public class  MapsActivity extends FragmentActivity implements OnMapReadyCallbac
 
 
 
+
         btnBuscar = (Button) findViewById(R.id.btnBuscar);
         editName = (EditText) findViewById(R.id.txtName);
 

@@ -19,6 +19,7 @@ public class DetailsActivity extends AppCompatActivity {
     private ImageView imgView;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

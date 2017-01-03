@@ -228,6 +228,7 @@ public class BeachDataSource {
             beach.setNudismo(cursor.getString(20));
 
 
+
             beachsList.add(beach);
             cursor.moveToNext();
         }
