@@ -13,6 +13,7 @@ public class Weather {
     private double swellHeight_m = -1.1;
     private int waterTemp_C = -3;
 
+
     /* swellHeight_m
     * waterTemp_C
     * tideTime

@@ -51,6 +51,7 @@ public class  MapsActivity extends FragmentActivity implements OnMapReadyCallbac
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
 
+
         btnBuscar = (Button) findViewById(R.id.btnBuscar);
         editName = (EditText) findViewById(R.id.txtName);
 

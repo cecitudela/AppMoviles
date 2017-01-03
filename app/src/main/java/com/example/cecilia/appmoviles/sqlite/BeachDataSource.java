@@ -227,6 +227,7 @@ public class BeachDataSource {
             beach.setZonaDeport(cursor.getString(19));
             beach.setNudismo(cursor.getString(20));
 
+
             beachsList.add(beach);
             cursor.moveToNext();
         }

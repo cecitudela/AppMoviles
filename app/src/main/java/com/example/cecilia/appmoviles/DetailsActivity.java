@@ -18,6 +18,7 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView txtDetails;
     private ImageView imgView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

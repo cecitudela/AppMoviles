@@ -103,6 +103,7 @@ public class ManageBeach {
         return sb.toString();
     }
 
+
     /**
      * Método que crea todos los objetos Beach a partir del json que se pasa por parámetro
      * @param in    String que contiene los datos del json obtenido de la API

@@ -12,6 +12,7 @@ public class Beach {
     private String description;
     private LatLng location;
 
+
     private String aseos;
     private String duchas;
     private String papelera;

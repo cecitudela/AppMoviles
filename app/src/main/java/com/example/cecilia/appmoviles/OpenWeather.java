@@ -38,8 +38,7 @@ public class OpenWeather {
 
     private String APPID_TIEMPO="f04cfb2ae2c0de6170c93642e492db63";
     private String APPID_MAREA="a61073923b5e4809bb2191414162712";
-
-
+    
 
     public Weather getWeaher(LatLng lat) {
         try {
