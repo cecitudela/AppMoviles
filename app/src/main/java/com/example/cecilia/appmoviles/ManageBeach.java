@@ -3,7 +3,6 @@ package com.example.cecilia.appmoviles;
 import android.os.StrictMode;
 
 import com.example.cecilia.appmoviles.sqlite.Beach;
-import com.example.cecilia.appmoviles.sqlite.BeachDataSource;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -138,6 +137,7 @@ public class ManageBeach {
                         b.setZonaSubmarin(prop.getString("Submarinis"));
                         b.setZonaSurf(prop.getString("Zona_Surf"));
                         b.setNudismo(prop.getString("Nudismo"));
+                        b.setUrlFoto(prop.getString("Ruta"));
                         beaches.add(b);
                     }
                 }

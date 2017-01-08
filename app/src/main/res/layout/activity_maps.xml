@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayoutFragment"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="?attr/colorAccent">
 
     <EditText
         android:layout_width="wrap_content"
@@ -10,7 +13,9 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:layout_alignParentTop="true"
-        android:id="@+id/txtName" />
+        android:id="@+id/txtName"
+        android:enabled="false"
+        android:visibility="invisible"/>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -20,7 +25,8 @@
         tools:context="com.example.cecilia.appmoviles.MapsActivity"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/txtName" />
+        android:layout_below="@+id/txtName"
+        android:layout_marginTop="?attr/actionBarSize" />
 
     <Button
         android:layout_width="wrap_content"
@@ -30,7 +36,35 @@
         android:layout_alignParentEnd="true"
         android:id="@+id/btnBuscar"
         android:onClick="filtrarNombre"
-        android:text="@string/btnBuscar" />
+        android:text="@string/btnBuscar"
+        android:enabled="false"
+        android:visibility="invisible"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/lupa"
+        android:onClick="mostrarBusador"
+        android:layout_marginBottom="123dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="14dp"
+        android:layout_marginEnd="14dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_below="@+id/txtName"
+        android:layout_alignRight="@+id/fab"
+        android:layout_alignEnd="@+id/fab"
+        android:layout_marginTop="12dp"
+        android:visibility="invisible"
+        android:enabled="false"
+        android:entries="@array/seleccion"/>
 
 </RelativeLayout>
 

@@ -1,5 +1,17 @@
 <resources>
-    <string name="app_name">AppMoviles</string>
+    <string name="app_name">BeachFinder</string>
     <string name="title_activity_maps">Map</string>
     <string name="btnBuscar">Buscar</string>
+    <string name="action_settings">Settings</string>
+    <string-array name="seleccion">
+        <item>Todos</item>
+        <item>Zona surf</item>
+        <item>Duchas</item>
+        <item>Establecimiento comida</item>
+        <item>Alquiler hamacas</item>
+        <item>Nudista</item>
+        <item>Servicio Limpieza</item>
+        <item>Oficina de turismo</item>
+    </string-array>
+    <string name="aseos">Aseos</string>
 </resources>

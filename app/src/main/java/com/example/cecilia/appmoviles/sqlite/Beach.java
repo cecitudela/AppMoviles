@@ -1,7 +1,5 @@
 package com.example.cecilia.appmoviles.sqlite;
 
-import android.location.Location;
-
 import com.google.android.gms.maps.model.LatLng;
 
 
@@ -11,6 +9,7 @@ public class Beach {
     private String name;
     private String description;
     private LatLng location;
+    private String urlFoto;
 
     private String aseos;
     private String duchas;
@@ -197,11 +196,20 @@ public class Beach {
         this.nudismo = nudismo;
     }
 
+    public String getUrlFoto() {
+        return urlFoto;
+    }
+
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
+    }
+
     @Override
     public String toString() {
         return "Nname='" + name +
                 "\n description='" + description +
                 "\n location=" + location +
+                "\n RUTA=" + urlFoto +
                 "\n aseos='" + aseos +
                 "\n duchas='" + duchas +
                 "\n papelera='" + papelera + '\'' +
